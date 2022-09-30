@@ -1,10 +1,10 @@
 import { create, IPFSHTTPClient, CID } from 'ipfs-http-client';
-import { IPFS_PROJECT_ID, IPFS_PROJECT_SECRET } from 'helpers/constants';
+import { IPFS_ID, IPFS_KEY } from 'helpers/constants';
 
 let ipfs: IPFSHTTPClient | undefined;
 
 try {
-  const hash = btoa(IPFS_PROJECT_ID + ':' + IPFS_PROJECT_SECRET);
+  const hash = btoa(IPFS_ID + ':' + IPFS_KEY);
 
   ipfs = create({
     url: 'https://ipfs.infura.io:5001/api/v0',
