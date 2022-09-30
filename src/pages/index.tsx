@@ -2,10 +2,15 @@ import { useState } from 'react';
 import type { NextPage } from 'next';
 import { useNewMoralisObject } from 'react-moralis';
 import { fileUpload, fetchFile } from 'helpers/ipfs';
+import { getImage } from 'helpers/utils';
 
 const Home: NextPage = () => {
   const { isSaving, error, save } = useNewMoralisObject('Frens');
-  const [nft, setNft] = useState({
+  const [nft, setNft] = useState<{
+    name: string;
+    description: string;
+    image: any;
+  }>({
     name: '',
     description: '',
     image: null,
@@ -14,17 +19,20 @@ const Home: NextPage = () => {
   const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const result: string = (await fileUpload(nft.image)) as string;
-    console.log(result);
+    const cid: string = (await fileUpload(nft.image)) as string;
 
-    const file = await fetchFile(result);
-    console.log(file);
+    const file = await fetchFile(cid);
+    setNft({
+      ...nft,
+      image: file,
+    });
 
-    save({
+    const result = await save({
       name: nft.name,
       description: nft.description,
-      image: result,
+      image: cid,
     });
+    console.log(result);
   };
 
   const handleChange = (
@@ -110,7 +118,7 @@ const Home: NextPage = () => {
           {!!nft.image && (
             <img
               className="h-60 max-w-full rounded-lg"
-              src={nft.image ? URL.createObjectURL(nft.image) : ''}
+              src={getImage(nft.image)}
               alt="image"
             />
           )}
