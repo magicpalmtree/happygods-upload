@@ -15,13 +15,16 @@ const Home: NextPage = () => {
     description: '',
     image: null,
   });
+  const [uploaded, setUploaded] = useState(false);
 
   const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const cid: string = (await fileUpload(nft.image)) as string;
+    setUploaded(false);
 
+    const cid: string = (await fileUpload(nft.image)) as string;
     const file = await fetchFile(cid);
+
     setNft({
       ...nft,
       image: file,
@@ -32,7 +35,8 @@ const Home: NextPage = () => {
       description: nft.description,
       image: cid,
     });
-    console.log(result);
+
+    setUploaded(true);
   };
 
   const handleChange = (
@@ -138,6 +142,15 @@ const Home: NextPage = () => {
         >
           Upload
         </button>
+
+        {uploaded && (
+          <div
+            className="p-4 mb-4 w-full text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
+            role="alert"
+          >
+            <span className="font-medium">Successfully Uploaded</span>
+          </div>
+        )}
       </div>
     </form>
   );
