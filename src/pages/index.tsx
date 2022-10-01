@@ -38,10 +38,10 @@ const Home: NextPage = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    if (e.currentTarget.name === 'image') {
+    if (e.target.name === 'image') {
       setNft((nft) => ({
         ...nft,
-        [e.target.name]: e.target.files[0],
+        [e.target.name]: (e.target as any).files[0],
       }));
     } else {
       setNft((nft) => ({
