@@ -20,7 +20,7 @@ const Home: NextPage = () => {
 
   const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('test');
+
     setUploaded(false);
     await Promise.all(
       Object.values(nft.image).map(async (el: any) => {
