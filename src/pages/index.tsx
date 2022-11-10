@@ -17,11 +17,13 @@ const Home: NextPage = () => {
     image: null,
   });
   const [uploaded, setUploaded] = useState(false);
+  const [loading, setloading] = useState(false);
 
   const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setUploaded(false);
+    setloading(true);
     await Promise.all(
       Object.values(nft.image).map(async (el: any) => {
         const cid: string = (await fileUpload(el)) as string;
@@ -34,6 +36,7 @@ const Home: NextPage = () => {
         });
       }),
     );
+    setloading(false);
     setUploaded(true);
   };
 
@@ -144,9 +147,9 @@ const Home: NextPage = () => {
           <button
             type="submit"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            disabled={uploaded}
+            disabled={loading}
           >
-            {!uploaded ? (
+            {!loading ? (
               'Upload'
             ) : (
               <div role="status">
